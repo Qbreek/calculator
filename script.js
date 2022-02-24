@@ -31,12 +31,37 @@ function Calculator (firstNum, secondNum, operand) {
 };
 
 const calculator = new Calculator();
-const buttons = document.querySelectorAll('.number');
 
+let userInput = '';
+
+const screen = document.querySelector('#screen');
+
+const buttons = document.querySelectorAll('.number');
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        calculator.firstNum = Number(button.value);
-        console.log(calculator.firstNum)
-
+        userInput += button.value;
+        screen.textContent = userInput;
     });
-})
+});
+
+const operands = document.querySelectorAll('.operand');
+operands.forEach(operand => {
+    operand.addEventListener('click', () => {
+        screen.textContent = '';
+        calculator.operand = operand.value;
+        if (calculator.firstNum === 0) {
+            calculator.firstNum = Number(userInput);
+            userInput = '';
+        }else if (calculator.secondNum === 0) {
+            calculator.secondNum = Number(userInput);
+            userInput = '';
+        }
+    });
+});
+
+const equals = document.querySelector('#equals');
+
+equals.addEventListener('click', () => {
+    screen.textContent = calculator.compute();
+});
+
