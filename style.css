@@ -9,6 +9,10 @@ body {
     margin-top: 100px;
 }
 
+button {
+    border: 1px solid black;
+}
+
 .calculator-body {
     border: 1px solid black;
     display: flex;
@@ -27,17 +31,22 @@ body {
 }
 
 .screen {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
     font-size: 40px;
     margin: 10px;
     width: 320px;
-    height: 150px;
+    height: 120px;
     background-color: greenyellow;
+}
+
+.answer {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .span-two {
     grid-column: span 2;
-}
-
-button {
-    border: 1px solid black;
 }
