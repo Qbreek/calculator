@@ -30,7 +30,7 @@ button {
     grid-template-rows: repeat(5,80px);
 }
 
-.screen {
+.display {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;

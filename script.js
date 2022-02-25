@@ -1,9 +1,14 @@
+function updateDisplay (display, valueToAppend) {
+    return display.textContent += valueToAppend;
+}
+
 let currentNumber = '';
 let computeStorage = [];
 const operationScreen = document.querySelector('.operation');
 const answerScreen = document.querySelector('.answer');
 
-/*  Add an event listener to each number of the calculator.
+/*  
+    Add an event listener to each number of the calculator.
     For every number clicked update the display. Store the-
     user input into the variable currentNumber.
 */
@@ -12,11 +17,13 @@ numbers.forEach(number => {
     number.addEventListener('click', () => {
         
         currentNumber += number.value;
-        operationScreen.textContent += number.value;
+        updateDisplay(operationScreen, number.value);
+
     });
 });
 
-/*  Add an event listener to each operand of the calculator.
+/*  
+    Add an event listener to each operand of the calculator.
     If the currentNumber variable is empty, the current inp-
     put was empty, so 0 is assigned. Store 0 to computeStor-
     age. If the currentNumber != empty convert to Number and
@@ -28,13 +35,13 @@ operands.forEach(operand => {
        
         if( currentNumber === '' ) {
             
-            operationScreen.textContent += 0 + operand.value;
+            updateDisplay(operationScreen, 0 + operand.value);
             computeStorage.push(0);
             computeStorage.push(operand.value);
 
         } else {
             
-            operationScreen.textContent += operand.value;
+            updateDisplay(operationScreen, operand.value);
             computeStorage.push(Number(currentNumber));
             computeStorage.push(operand.value);
             currentNumber = '';
@@ -43,15 +50,16 @@ operands.forEach(operand => {
     });
 });
 
-
 let result;
 
 const equals = document.querySelector('.equals');
 equals.addEventListener('click', () => {
+
+    console.log(computeStorage);
    
     if( currentNumber === '' ) {
         
-        operationScreen.textContent += 0
+        updateDisplay(operationScreen, 0);
         computeStorage.push(0);
 
     } else {
@@ -68,10 +76,7 @@ equals.addEventListener('click', () => {
         indexOfMult = computeStorage.indexOf('*');
         indexOfDiv = computeStorage.indexOf('/');
 
-        /*  No division or multiplication found in compute-
-            Storage. Add from left to right. 
-        */
-        if (indexOfMult === -1 && indexOfDiv === -1) {
+        if (indexOfMult === -1 && indexOfDiv === -1) {    // No division or multiplication found in computeStorage. Add from left to right.
             
             if ( computeStorage[i+1] === '+' ) {
                 
@@ -87,13 +92,11 @@ equals.addEventListener('click', () => {
             
             };
         
-        // Multiplication
         } else {
 
-            // case with only /.
-            if ( indexOfMult === -1 ) {
+            if ( indexOfMult === -1 ) {    // Only divisions found in computeStorage.
 
-                if ( indexOfDiv != -1 ) {
+                if ( indexOfDiv != -1 ) {    // There is at least one division in computeStorage.
 
                     i = indexOfDiv;
                     result = computeStorage[i-1] / computeStorage[i+1];
@@ -102,10 +105,9 @@ equals.addEventListener('click', () => {
                 
                 };
             
-            // case with only *.
-            } else if (indexOfDiv === -1 ) {
+            } else if (indexOfDiv === -1 ) {    // Only multiplications found in computeStorage.
 
-                if ( indexOfMult != -1 ) {
+                if ( indexOfMult != -1 ) {    // There is at least one multiplication in computeStorage.
                     i = indexOfMult;
                     result = computeStorage[i-1] * computeStorage[i+1];
                     computeStorage.splice(i-1 , 3, result);
@@ -113,17 +115,15 @@ equals.addEventListener('click', () => {
                 
                 };
             
-            // case with both div and mult
-            } else {
+            } else {    // Both multiplications and divisions found in computeStorage.
 
-                if ( indexOfMult < indexOfDiv ) {
-
+                if ( indexOfMult < indexOfDiv ) {    // If index of mult is smaller than index of div operate mult first.
                     i = indexOfMult;
                     result = computeStorage[i-1] * computeStorage[i+1];
                     computeStorage.splice(i-1 , 3, result);
                     console.log(computeStorage);
 
-                } else {
+                } else {    // Div comes first, operate div first.
 
                     i = indexOfDiv;
                     result = computeStorage[i-1] / computeStorage[i+1];
@@ -138,4 +138,5 @@ equals.addEventListener('click', () => {
         console.log('ends');
     };
     answerScreen.textContent = computeStorage[0];
+    currentNumber = computeStorage;
 });
