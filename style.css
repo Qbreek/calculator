@@ -27,6 +27,7 @@ body {
 }
 
 .screen {
+    font-size: 40px;
     margin: 10px;
     width: 320px;
     height: 150px;
