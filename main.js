@@ -1,9 +1,9 @@
-
 import compute from "./modules/compute.js";
 import updateDisplay from "./modules/updateDisplay.js"
 
 function main () {
 
+    let answer = null;
     let currentNumber = '';
     let computeStorage = [];
     const operationScreen = document.querySelector('.operation');
@@ -37,22 +37,30 @@ function main () {
     operands.forEach(operand => {
         operand.addEventListener('click', () => {
         
-            if( currentNumber === '' ) {
+            if( currentNumber === '' && answer === null ) {
                 
                 updateDisplay(operationScreen, 0 + operand.value);
                 computeStorage.push(0);
                 computeStorage.push(operand.value);
                 console.log(computeStorage);
 
-            } else {
-                
-                updateDisplay(operationScreen, operand.value);
+            } else if ( answer === null ) {
+
+                updateDisplay(operationScreen,operand.value)
                 computeStorage.push(Number(currentNumber));
                 computeStorage.push(operand.value);
                 currentNumber = '';
                 console.log(computeStorage);
 
-            };
+            } else {
+                
+                operationScreen.textContent = '';
+                updateDisplay(operationScreen, answer + operand.value);
+                computeStorage.push(Number(currentNumber));
+                computeStorage.push(operand.value);
+                console.log(computeStorage);
+
+            }
         });
     });
 
@@ -70,10 +78,19 @@ function main () {
 
         };
 
-        let answer = compute(computeStorage);
+        answer = compute(computeStorage);
         currentNumber = answer;
-        console.log(computeStorage);
-        updateDisplay(answerScreen, answer);
+        computeStorage = [];
+        
+        if (answerScreen.textContent = '') {
+            
+            updateDisplay(answerScreen, answer);
+
+        } else {
+            
+            answerScreen.textContent = '';
+            updateDisplay(answerScreen, answer);
+        }
 
     });
 };

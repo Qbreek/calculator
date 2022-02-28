@@ -73,7 +73,9 @@ function compute (computeStorage) {
 
     };
 
-    return computeStorage; 
+    computeStorage = [];
+    return result; 
+    
 };
 
 export default compute;
