@@ -10,7 +10,7 @@ function main () {
     const operationScreen = document.querySelector('.operation');    // Displays the operation querry.
     const answerScreen = document.querySelector('.answer');    // Displays the answer.
 
-    // Resets the calculator
+    // Resets the calculator.
     const allClearBtn = document.querySelector('.all-clear');
     allClearBtn.addEventListener('click', () => {
         
@@ -23,12 +23,29 @@ function main () {
     // TODO
     const deleteBtn = document.querySelector('.delete');
     deleteBtn.addEventListener('click', () => {
-        operationScreen.textContent = operationScreen.textContent.slice(0, operationScreen.textContent.length-1);
-        currentNumber = currentNumber.slice(0 , currentNumber.length-1);
-        console.log(currentNumber);
-        computeStorage.pop();
-        computeStorage.push(currentNumber)
-        console.log(computeStorage);
+
+        operationScreen.textContent = operationScreen.textContent.slice(0, operationScreen.textContent.length - 1 );
+        
+        if ( currentNumber != '' ) {
+            
+            currentNumber = currentNumber.slice(0, currentNumber.length-1);
+            console.log(currentNumber);
+        
+        } else {
+
+            if ( typeof (computeStorage[computeStorage.length - 1]) === 'number' ) {
+
+                currentNumber = String(computeStorage[computeStorage.length-1]);
+                console.log(currentNumber);
+
+            } else {
+                
+                computeStorage.pop();
+                console.log(computeStorage);
+                console.log('operand');
+
+            };
+        };
     });
 
     /*  
@@ -68,14 +85,12 @@ function main () {
                 updateDisplay(operationScreen, operand.value);
                 appendToStorage(computeStorage, Number(currentNumber), operand.value);
                 currentNumber = '';
-                console.log('lathos')
 
             } else if ( currentNumber === '' && answer != null ) {
                 
                 clearDisplay(operationScreen);
                 updateDisplay(operationScreen, 0 + operand.value);
                 appendToStorage(computeStorage, 0, operand.value);
-                currentNumber = '';
                 answer = null;
 
             } else if ( currentNumber != '' && answer != null ){
@@ -93,22 +108,23 @@ function main () {
     const equalsBtn = document.querySelector('.equals');
     equalsBtn.addEventListener('click', () => {
     
-        if ( currentNumber === '' ) {
-            
-            updateDisplay(operationScreen, 0);
-            computeStorage.push(0);
+   
+        if (currentNumber != '') {
 
-        } else {
-        
             computeStorage.push(Number(currentNumber));
 
-        };
+        } else {
+
+            computeStorage.pop();
+            console.log(computeStorage);
+        }
+
 
         answer = compute(computeStorage);
         currentNumber = answer;
         computeStorage = [];
         
-        if (answerScreen.textContent = '') {
+        if ( answerScreen.textContent = '') {
             
             updateDisplay(answerScreen, currentNumber);
             
