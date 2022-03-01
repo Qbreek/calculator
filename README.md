@@ -1,7 +1,7 @@
 # Non scientific Calculator
 
 ## Description
-This is a simple non scientific calculator, created using vanilla Javascript, CSS and HTML. The main logic behind the whole application is the computeStorage array which acts as a buffer, storing the users input. When the user presses the enter button, the answer is calculated based on the computeStorage array. Starting from left to right ....... 
+This is a simple non scientific calculator, created using vanilla Javascript, CSS and HTML. The main logic behind the whole application is the computeStorage array which acts as a buffer, storing the users input. With my implementation the eval() function is avoided. When the user presses the enter button, the answer is calculated based on the computeStorage array. Starting from left to right ....... 
 
 
 
