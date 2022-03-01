@@ -1,5 +1,9 @@
 import compute from "./modules/compute.js";
-import updateDisplay from "./modules/updateDisplay.js"
+import {updateDisplay} from "./modules/updateDisplay.js"
+
+function clearDisplay(display) {
+    return display.textContent = '';
+}
 
 function main () {
 
@@ -9,17 +13,32 @@ function main () {
     const operationScreen = document.querySelector('.operation');
     const answerScreen = document.querySelector('.answer');
 
+    const allClearBtn = document.querySelector('.all-clear');
+    allClearBtn.addEventListener('click', () => {
+        answer = null;
+        currentNumber = '';
+        computeStorage = [];
+        operationScreen.textContent = '';
+        answerScreen.textContent = '';
+    });
+
+    // TODO
+    const deleteBtn = document.querySelector('.delete');
+    deleteBtn.addEventListener('click', () => {
+    });
+
     /*  
         Add an event listener to each number of the calculator.
         For every number clicked update the display. Store the-
         user input into the variable currentNumber.
     */
 
-    const numbers = document.querySelectorAll('.number');
-    numbers.forEach(number => {
+    const numberBtn = document.querySelectorAll('.number');
+    numberBtn.forEach(number => {
         number.addEventListener('click', () => {
             
             currentNumber += number.value;
+            console.log(currentNumber)
             updateDisplay(operationScreen, number.value);
 
         });
@@ -33,41 +52,50 @@ function main () {
         store into computeStorage. Update the display.
     */
 
-    const operands = document.querySelectorAll('.operand');
-    operands.forEach(operand => {
+    const operandBtn = document.querySelectorAll('.operand');
+    operandBtn.forEach(operand => {
         operand.addEventListener('click', () => {
         
-            if( currentNumber === '' && answer === null ) {
+            if ( currentNumber === '' && answer === null ) {
                 
                 updateDisplay(operationScreen, 0 + operand.value);
                 computeStorage.push(0);
                 computeStorage.push(operand.value);
-                console.log(computeStorage);
-
+            
             } else if ( answer === null ) {
-
-                updateDisplay(operationScreen,operand.value)
+                
+                updateDisplay(operationScreen, operand.value);
                 computeStorage.push(Number(currentNumber));
                 computeStorage.push(operand.value);
                 currentNumber = '';
-                console.log(computeStorage);
+                console.log('lathos')
 
-            } else {
+            } else if ( currentNumber === '' && answer != null ) {
                 
+                operationScreen.textContent = '';
+                updateDisplay(operationScreen, 0 + operand.value);
+                computeStorage.push(0);
+                computeStorage.push(operand.value);
+                currentNumber = '';
+                answer = null;
+
+            } else if ( currentNumber != '' && answer != null ){
+
                 operationScreen.textContent = '';
                 updateDisplay(operationScreen, answer + operand.value);
                 computeStorage.push(Number(currentNumber));
                 computeStorage.push(operand.value);
-                console.log(computeStorage);
+                currentNumber = '';
+                answer = null;
 
-            }
+            };
         });
     });
 
-    const equals = document.querySelector('.equals');
-    equals.addEventListener('click', () => {
+    const equalsBtn = document.querySelector('.equals');
+    equalsBtn.addEventListener('click', () => {
     
-        if( currentNumber === '' ) {
+        if ( currentNumber === '' ) {
             
             updateDisplay(operationScreen, 0);
             computeStorage.push(0);
@@ -78,19 +106,22 @@ function main () {
 
         };
 
-        answer = compute(computeStorage);
-        currentNumber = answer;
+        currentNumber = compute(computeStorage);
+        answer = currentNumber;
+        console.log('anser' + answer);
         computeStorage = [];
+        console.log(computeStorage);
         
         if (answerScreen.textContent = '') {
             
-            updateDisplay(answerScreen, answer);
-
+            updateDisplay(answerScreen, currentNumber);
+            
         } else {
             
             answerScreen.textContent = '';
-            updateDisplay(answerScreen, answer);
-        }
+            updateDisplay(answerScreen, currentNumber);
+
+        };
 
     });
 };
