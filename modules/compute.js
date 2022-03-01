@@ -72,8 +72,7 @@ function compute (computeStorage) {
         console.log('ends');
 
     };
-
-    computeStorage = [];
+    
     return result; 
     
 };
