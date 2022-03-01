@@ -5,6 +5,7 @@ function compute (computeStorage) {
     
     while ( computeStorage.length != 1 ) {    
         
+        console.log(computeStorage);
         let indexOfMult = computeStorage.indexOf('*');
         let indexOfDiv = computeStorage.indexOf('/');
         let indexOfOpeningParenthesis = computeStorage.indexOf('(');
