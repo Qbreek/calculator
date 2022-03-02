@@ -3,7 +3,8 @@ function initializeVariables () {
     let answer = null;
     let currentNumber = '';
     let computeStorage = [];
-    return [answer, currentNumber, computeStorage];
+    let operationHistoryCount = 0;
+    return [answer, currentNumber, computeStorage, operationHistoryCount];
 
 };
 
