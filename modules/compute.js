@@ -1,14 +1,28 @@
+function add(firstNumber, secondNumber) {
+    return firstNumber + secondNumber;
+};
+
+function multiply(firstNumber, secondNumber) {
+    return firstNumber * secondNumber;
+};
+
+function divide(firstNumber, secondNumber) {
+    if ( secondNumber != 0 ) {
+        return firstNumber / secondNumber;
+    }else {
+        return 'Error';
+    }
+};
+
 function compute (computeStorage) {
 
-    let i = 0;
-    let result;
-    console.log(computeStorage);
+    let i = 0, result 
     
-    while ( computeStorage.length != 1 ) {    
+    while (computeStorage.length != 1) {    
         
-        if ( typeof computeStorage[i+2] != 'number' ) {
+        if (typeof computeStorage[i+2] != 'number') {
 
-            if ( computeStorage[i+1] === '*' && computeStorage[i+2] === '-' || computeStorage[i+1] === '/' && computeStorage[i+2] === '-' ) {
+            if (computeStorage[i+1] === '*' && computeStorage[i+2] === '-' || computeStorage[i+1] === '/' && computeStorage[i+2] === '-') {
                 
                 computeStorage.splice(i+2, 2, -computeStorage[i+3]);
 
@@ -19,104 +33,104 @@ function compute (computeStorage) {
             };
         };
 
-        let indexOfMult = computeStorage.indexOf('*');
-        let indexOfDiv = computeStorage.indexOf('/');
-        let indexOfOpeningParenthesis = computeStorage.indexOf('(');
-        let indeOfClosingParenthesis = computeStorage.indexOf(')');
+        const indexOfMult = computeStorage.indexOf('*');
+        const indexOfDiv = computeStorage.indexOf('/');
 
-        if (indexOfMult === -1 && indexOfDiv === -1 && indexOfOpeningParenthesis === -1 && indeOfClosingParenthesis === -1 ) {    // No division or multiplication found in computeStorage. Add from left to right.
+
+        if (indexOfMult === -1 && indexOfDiv === -1) {    // No division or multiplication found in computeStorage. Add from left to right.
             
-            if ( computeStorage[i+1] === '+' ) {
-                
-                result = computeStorage[i] + computeStorage[i+2];
-                computeStorage.splice(i, 3, result);
-    
-            } else if ( computeStorage[i+1] === '-') {
-                
-                result = computeStorage[i] - computeStorage[i+2];
-                computeStorage.splice(i, 3, result);
-            
+            switch (computeStorage[i+1]) {
+               
+                case '+' :
+                    
+                    result = add(computeStorage[i], computeStorage[i+2]);
+                    break;
+
+                case '-' :
+
+                    result = add(computeStorage[i], -computeStorage[i+2]);
+                    break;
             };
+
+            computeStorage.splice(i, 3, result);
         
-        } else {
+        } else if ( indexOfMult === -1 && indexOfDiv != -1 ) {    // Only divisions found in computeStorage.
 
-            if ( indexOfMult === -1 ) {    // Only divisions found in computeStorage.
+            i = indexOfDiv;
 
-                if ( indexOfDiv != -1 ) {    // There is at least one division in computeStorage.
+            switch (computeStorage[i+1]) {
 
-                    i = indexOfDiv;
+                case '-' :    // Convert to negative
+                    
+                    result = divide(computeStorage[i-1], -computeStorage[i+2]);
+                    computeStorage.splice(i-1 , 4, result);
+                    break;
 
-                    if (computeStorage[i+1] === '-') {    // Convert to negative number
+                default :
+                    
+                    result = divide(computeStorage[i-1], computeStorage[i+1])
+                    computeStorage.splice(i-1 , 3, result);
+                    break;
+            };
 
-                        result = computeStorage[i-1] / ( -computeStorage[i+2] );
-                        computeStorage.splice(i-1 , 4, result);
+        } else if ( indexOfDiv === -1  && indexOfMult != -1 ) {    // Only multiplications found in computeStorage.
 
-                    } else {
+            i = indexOfMult;
 
-                        result = computeStorage[i-1] / computeStorage[i+1];
-                        computeStorage.splice(i-1 , 3, result);
-                                            
-                    };
-                
-                };
-            
-            } else if (indexOfDiv === -1 ) {    // Only multiplications found in computeStorage.
+            switch (computeStorage[i+1]) {
 
-                if ( indexOfMult != -1 ) {    // There is at least one multiplication in computeStorage.
-                   
-                    i = indexOfMult;
+                case '-' :    // Convert to negative
+                    
+                    result = multiply(computeStorage[i-1], -computeStorage[i+2]);
+                    computeStorage.splice(i-1 , 4, result);
+                    break;
 
-                    if (computeStorage[i+1] === '-') {    // Convert to negative number
+                default :
 
-                        result = computeStorage[i-1] * ( -computeStorage[i+2] );
-                        computeStorage.splice(i-1 , 4, result);
+                    result = multiply(computeStorage[i-1], computeStorage[i+1]);
+                    computeStorage.splice(i-1 , 3, result);
+                    break;
+            };
+    
+        } else if ( indexOfMult < indexOfDiv ) {    // Both multiplications and divisions found in computeStorage.
 
-                    } else {
+            i = indexOfMult;
 
-                        result = computeStorage[i-1] * computeStorage[i+1];
-                        computeStorage.splice(i-1 , 3, result);
-                                            
-                    };
-                };
-            
-            } else {    // Both multiplications and divisions found in computeStorage.
+            switch (computeStorage[i+1]) {
 
-                if ( indexOfMult < indexOfDiv ) {    // If index of mult is smaller than index of div operate mult first.
-                  
-                    i = indexOfMult;
+                case '-' :    // Convert to negative
+                    
+                    result = multiply(computeStorage[i-1], -computeStorage[i+2]);
+                    computeStorage.splice(i-1 , 4, result);
+                    break;
 
-                    if (computeStorage[i+1] === '-') {    // Convert to negative number
+                default :
 
-                        result = computeStorage[i-1] * ( -computeStorage[i+2] );
-                        computeStorage.splice(i-1 , 4, result);
+                    result = multiply(computeStorage[i-1], computeStorage[i+1]);
+                    computeStorage.splice(i-1 , 3, result);
+                    break;
+            };
 
-                    } else {
+        } else {    // Div comes first, operate div first.
 
-                        result = computeStorage[i-1] * computeStorage[i+1];
-                        computeStorage.splice(i-1 , 3, result);
-                                            
-                    };
+            i = indexOfDiv;
 
+            switch (computeStorage[i+1]) {
 
-                } else {    // Div comes first, operate div first.
+                case '-' :    // Convert to negative
+                    
+                    result = divide(computeStorage[i-1], -computeStorage[i+2]);
+                    computeStorage.splice(i-1 , 4, result);
+                    break;
 
-                    i = indexOfDiv;
-
-                    if (computeStorage[i+1] === '-') {    // Convert to negative number
-
-                        result = computeStorage[i-1] / ( -computeStorage[i+2] );
-                        computeStorage.splice(i-1 , 4, result);
-
-                    } else {
-
-                        result = computeStorage[i-1] / computeStorage[i+1];
-                        computeStorage.splice(i-1 , 3, result);
-                                            
-                    };
-
-                };
+                default :
+                    
+                    result = divide(computeStorage[i-1], computeStorage[i+1])
+                    computeStorage.splice(i-1 , 3, result);
+                    break;
             };
         };
+        
         
         i = 0;
 
@@ -125,5 +139,6 @@ function compute (computeStorage) {
     return result; 
     
 };
+
 
 export default compute;
