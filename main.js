@@ -60,7 +60,6 @@ function main () {
         number.addEventListener('click', () => {
             
             currentNumber += number.value;
-            console.log(currentNumber)
             updateDisplay(operationScreen, number.value);
 
         });
@@ -80,6 +79,7 @@ function main () {
                 
                 updateDisplay(operationScreen, operand.value);
                 computeStorage.push(operand.value);
+                console.log(computeStorage);
 
             } else if ( answer === null ) {    // Based on the value of the var answer the displays are updated correctly.
                 
@@ -117,7 +117,8 @@ function main () {
         answer = compute(computeStorage);
         currentNumber = answer;
         computeStorage = [];
-        
+
+
         if ( answerScreen.textContent = '') {
             
             updateDisplay(answerScreen, currentNumber);
