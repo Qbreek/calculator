@@ -2,17 +2,15 @@ function compute (computeStorage) {
 
     let i = 0;
     let result;
-
-    let killLoop = 0;    //REMOVE WHEN IT WORKS
     
     while ( computeStorage.length != 1 ) {    
         
-        killLoop ++;
-        if (killLoop > 10) {
-            console.log('break');
-            break;
+        if (typeof computeStorage[i+2] != 'number') {
+            
+            return 'Error';
+
         };
-        console.log(computeStorage);
+
         let indexOfMult = computeStorage.indexOf('*');
         let indexOfDiv = computeStorage.indexOf('/');
         let indexOfOpeningParenthesis = computeStorage.indexOf('(');
