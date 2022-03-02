@@ -6,6 +6,7 @@
 
 body {
     display: flex;
+    gap: 20px;
     justify-content: center;
     margin-top: 100px;
     background: #08F4E8;
@@ -58,3 +59,11 @@ button {
     background-color: orange;
 }
 
+.past-expressions-container {
+    border-radius: 2%;
+    display: flex;
+    justify-content: center;
+    height: 120px;
+    width: 300px;
+    background-color: #D3D3D3;
+}
