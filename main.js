@@ -63,7 +63,6 @@ function main () {
 
         });
     });
-
     /*  
         Add an event listener to each operand of the calculator.
         If the currentNumber variable is empty, the current inp-
