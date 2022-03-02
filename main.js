@@ -24,7 +24,7 @@ function main () {
     const deleteBtn = document.querySelector('.delete');
     deleteBtn.addEventListener('click', () => {
 
-        operationScreen.textContent = operationScreen.textContent.slice(0, operationScreen.textContent.length - 1 );
+        operationScreen.textContent = operationScreen.textContent.slice( 0, operationScreen.textContent.length - 1 );
         
         if ( currentNumber != '' ) {
             
@@ -76,9 +76,13 @@ function main () {
         operand.addEventListener('click', () => {
         
             if ( currentNumber === '' && answer === null ) {
-            
+                
+                updateDisplay(operationScreen, operand.value);
+                appendToStorage(computeStorage, Number(currentNumber), operand.value);
+                /*
                 updateDisplay(operationScreen, 0 + operand.value);
                 appendToStorage(computeStorage, 0, operand.value);
+                */
 
             } else if ( answer === null ) {
                 
@@ -107,7 +111,8 @@ function main () {
 
     const equalsBtn = document.querySelector('.equals');
     equalsBtn.addEventListener('click', () => {
-    
+        
+        console.log(computeStorage);
    
         if (currentNumber != '') {
 
@@ -118,7 +123,6 @@ function main () {
             computeStorage.pop();
             console.log(computeStorage);
         }
-
 
         answer = compute(computeStorage);
         currentNumber = answer;
