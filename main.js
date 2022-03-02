@@ -8,9 +8,10 @@ import enableBtn from "./modules/enableBtn.js";
 
 function main () {
     
-    let [answer, currentNumber, computeStorage] = initializeVariables();
+    let [answer, currentNumber, computeStorage, operationHistoryCount] = initializeVariables();
     const operationScreen = document.querySelector('.operation');    // Displays the operation querry.
     const answerScreen = document.querySelector('.answer');    // Displays the answer.
+    const operationHistory = document.querySelector('.operation-history');
 
     // Resets the calculator.
     const allClearBtn = document.querySelector('.all-clear');
@@ -20,23 +21,22 @@ function main () {
         clearDisplay(operationScreen);
         clearDisplay(answerScreen);
         enableBtn(deleteBtn, equalsBtn);
-
     });
 
     // Delete numbers and expressions on display AND on computeStorage.
     const deleteBtn = document.querySelector('.delete');
     deleteBtn.addEventListener('click', () => {
 
-        operationScreen.textContent = operationScreen.textContent.slice( 0, operationScreen.textContent.length - 1 );    // Slice the input on display.
+        operationScreen.textContent = operationScreen.textContent.slice(0, operationScreen.textContent.length - 1);    // Slice the input on display.
         
-        if ( currentNumber != '' ) {
+        if (currentNumber != '') {
             
             currentNumber = currentNumber.slice(0, currentNumber.length-1);    // Slice the current number on display.
         
         } else {
 
             // Current number is currently empty. Check what was last added to the buffer.
-            if ( typeof (computeStorage[computeStorage.length - 1]) === 'number' ) {    // If its a number, this becomes the current number.
+            if (typeof (computeStorage[computeStorage.length - 1]) === 'number') {    // If its a number, this becomes the current number.
 
                 currentNumber = String(computeStorage[computeStorage.length-1]);
                 currentNumber = currentNumber.slice(0, currentNumber.length-1);    
@@ -45,7 +45,6 @@ function main () {
             } else {    // If it's an operand , pop the operand from the buffer.
                 
                 computeStorage.pop();
-
             };
         };
     });
@@ -61,7 +60,6 @@ function main () {
             
             currentNumber += number.value;
             updateDisplay(operationScreen, number.value);
-
         });
     });
     /*  
@@ -75,26 +73,25 @@ function main () {
 
             enableBtn(deleteBtn, equalsBtn);
         
-            if ( currentNumber === '') {    // If the user chains operands without a number in between, this will lead to an error.
+            if (currentNumber === '') {    // If the user chains operands without a number in between, this will lead to an error.
                 
                 updateDisplay(operationScreen, operand.value);
                 computeStorage.push(operand.value);
                 console.log(computeStorage);
 
-            } else if ( answer === null ) {    // Based on the value of the var answer the displays are updated correctly.
+            } else if (answer === null) {    // Based on the value of the var answer the displays are updated correctly.
                 
                 updateDisplay(operationScreen, operand.value);
                 appendToStorage(computeStorage, Number(currentNumber), operand.value);
                 currentNumber = '';
 
-            } else  if ( answer != null ) {
+            } else  if (answer != null) {
 
                 clearDisplay(operationScreen);
                 updateDisplay(operationScreen, answer + operand.value);
                 appendToStorage(computeStorage, Number(currentNumber), operand.value);
                 currentNumber = '';
                 answer = null;
-
             };
         });
     });
@@ -103,23 +100,26 @@ function main () {
     equalsBtn.addEventListener('click', () => {
 
         disableBtn(deleteBtn, equalsBtn);
-   
+        
         if (currentNumber === '') {
-
+            
             computeStorage.pop();
-
+            
         } else {
-
+            
             computeStorage.push(Number(currentNumber));
-
         };
-
+        
         answer = compute(computeStorage);
         currentNumber = answer;
         computeStorage = [];
 
-
-        if ( answerScreen.textContent = '') {
+        operationHistoryCount ++;
+        const pastOperationElement = document.createElement('button');
+        pastOperationElement.textContent += `${operationHistoryCount}. ${operationScreen.textContent} = ${answer}`;
+        operationHistory.appendChild(pastOperationElement);
+        
+        if (answerScreen.textContent = '') {
             
             updateDisplay(answerScreen, currentNumber);
             
