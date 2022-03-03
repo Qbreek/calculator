@@ -12,42 +12,40 @@
     and 31' from the array and replace them with the result.
 */
 
+
 function compute (computeStorage) {
 
     let i = 0, result;
     
     while (computeStorage.length != 1) {
         
-        const indexOfOpeningPar = computeStorage.indexOf('(');
-        const indexOfClosingPar = computeStorage.indexOf(')');
-        const indexOfMult = computeStorage.indexOf('*');
-        const indexOfDiv = computeStorage.indexOf('/');
-
-        if (computeStorage[0] === '-') {
-
-            computeStorage.splice(0,2,-computeStorage[1]);
+        const [indexOfOpeningPar, indexOfClosingPar, indexOfMult, indexOfDiv] = findIndex(computeStorage);
         
-        }else if (typeof computeStorage[0] != 'number') {
+        if (computeStorage[0] === '-') {    // Edge case, first number is negative.
+            
+            computeStorage.splice(0,2,-computeStorage[1]);
+            
+        }else if (typeof computeStorage[0] != 'number') {    // Wrong input : eg*9+1-121
 
             return 'Error';
         };
-
-        if (indexOfOpeningPar === -1 && indexOfClosingPar === -1) {
-
+        
+        if (indexOfOpeningPar === -1 && indexOfClosingPar === -1) {    // No parenthesis found.
+            
             if (indexOfMult === -1 && indexOfDiv === -1) {    // No division or multiplication found in computeStorage. Add from left to right.
                 
                 switch (computeStorage[i+1]) {
                     
                     case '+' :
                         
-                        result = add(computeStorage[i], computeStorage[i+2]);
-                        break;
-                        
+                    result = add(computeStorage[i], computeStorage[i+2]);
+                    break;
+                    
                     case '-' :
                         
                         result = add(computeStorage[i], -computeStorage[i+2]);
                         break;
-                };
+                    };
                     
                 computeStorage.splice(i, 3, result);
                         
@@ -56,7 +54,7 @@ function compute (computeStorage) {
                 i = indexOfDiv;
                 
                 switch (computeStorage[i+1]) {
-                    
+            
                     case '-' :    // Convert to negative
                     
                         result = divide(computeStorage[i-1], -computeStorage[i+2]);
@@ -64,7 +62,7 @@ function compute (computeStorage) {
                         break;
                     
                     default :
-                
+                    
                         result = divide(computeStorage[i-1], computeStorage[i+1])
                         computeStorage.splice(i-1 , 3, result);
                         break;
@@ -78,15 +76,15 @@ function compute (computeStorage) {
                     
                     case '-' :    // Convert to negative
                     
-                        result = multiply(computeStorage[i-1], -computeStorage[i+2]);
-                        computeStorage.splice(i-1 , 4, result);
-                        break;
+                    result = multiply(computeStorage[i-1], -computeStorage[i+2]);
+                    computeStorage.splice(i-1 , 4, result);
+                    break;
                     
                     default :
                     
-                        result = multiply(computeStorage[i-1], computeStorage[i+1]);
-                        computeStorage.splice(i-1 , 3, result);
-                        break;
+                    result = multiply(computeStorage[i-1], computeStorage[i+1]);
+                    computeStorage.splice(i-1 , 3, result);
+                    break;
                 };
                 
             } else if (indexOfMult < indexOfDiv) {    // Both multiplications and divisions found in computeStorage. From left to right mult is first.
@@ -94,53 +92,53 @@ function compute (computeStorage) {
                 i = indexOfMult;
                 
                 switch (computeStorage[i+1]) {
-    
+                    
                     case '-' :    // Convert to negative
                     
-                        result = multiply(computeStorage[i-1], -computeStorage[i+2]);
-                        computeStorage.splice(i-1 , 4, result);
-                        break;
+                    result = multiply(computeStorage[i-1], -computeStorage[i+2]);
+                    computeStorage.splice(i-1 , 4, result);
+                    break;
                     
                     default :
                     
-                        result = multiply(computeStorage[i-1], computeStorage[i+1]);
-                        computeStorage.splice(i-1 , 3, result);
-                        break;
+                    result = multiply(computeStorage[i-1], computeStorage[i+1]);
+                    computeStorage.splice(i-1 , 3, result);
+                    break;
                 };
                 
             } else {    // Div comes first, operate div first.
                 
                 i = indexOfDiv;
-    
+                
                 switch (computeStorage[i+1]) {
                     
                     case '-' :    // Convert to negative
                     
-                        result = divide(computeStorage[i-1], -computeStorage[i+2]);
-                        computeStorage.splice(i-1 , 4, result);
-                        break;
+                    result = divide(computeStorage[i-1], -computeStorage[i+2]);
+                    computeStorage.splice(i-1 , 4, result);
+                    break;
                     
                     default :
                     
-                        result = divide(computeStorage[i-1], computeStorage[i+1])
-                        computeStorage.splice(i-1 , 3, result);
-                        break;
+                    result = divide(computeStorage[i-1], computeStorage[i+1])
+                    computeStorage.splice(i-1 , 3, result);
+                    break;
                 };
             };
-        
+            
         } else {
-
-                // TODO tommorow.
-                let expressionInsidePar = computeStorage.slice(indexOfOpeningPar + 1, indexOfClosingPar);
-                console.log(expressionInsidePar);
-                let resultOfPar = compute(expressionInsidePar);
-                computeStorage.splice(indexOfOpeningPar, indexOfClosingPar - 1, resultOfPar);
+            
+            // TODO tommorow.
+            let expressionInsidePar = computeStorage.slice(indexOfOpeningPar + 1, indexOfClosingPar);
+            console.log(expressionInsidePar);
+            let resultOfPar = compute(expressionInsidePar);
+            computeStorage.splice(indexOfOpeningPar, indexOfClosingPar - 1, resultOfPar);
         };
         
         console.log(computeStorage);
         i = 0;
     };
-
+    
     if (isNaN(result)) {
 
         return 'Error';
@@ -157,11 +155,22 @@ const multiply = (a, b) => a *b ;
 const divide = (a, b) => {
     
     if ( b != 0 ) {
-
+        
         return a / b;
     };
-
+    
     return 'Error';
 };
+
+// Finds the given indexes in the array.
+function findIndex (array) {
+
+    const openPar = array.indexOf('(');
+    const closePar = array.indexOf(')');
+    const mult = array.indexOf('*');
+    const div = array.indexOf('/');
+
+    return [openPar, closePar, mult, div];
+}
 
 export default compute;
