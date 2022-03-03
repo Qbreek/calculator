@@ -83,12 +83,9 @@ button {
 
 .operation-history > button {
     background-color: inherit;
-    padding: 5px;
-    margin-top: 10px;
 }
 
 .operation-history > button:hover {
     font-size: 21px;
-    padding: 5px;
-    margin-top: 10px;
+
 }
