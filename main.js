@@ -31,7 +31,7 @@ function main () {
         
         if (currentNumber != '') {
             
-            currentNumber = currentNumber.slice(0, currentNumber.length-1);    // Slice the current number on display.
+            currentNumber = currentNumber.slice(0, currentNumber.length-1);    // Slice the current number variable.
         
         } else {
 
@@ -48,7 +48,7 @@ function main () {
             };
         };
     });
-
+    
     /*  
         Add an event listener to each number of the calculator.
         For every number clicked update the display. Store the-
@@ -62,6 +62,7 @@ function main () {
             updateDisplay(operationScreen, number.value);
         });
     });
+
     /*  
         Add an event listener to each operand of the calculator.
         Convert currentNumber from String to Number and store i-
@@ -114,10 +115,18 @@ function main () {
         currentNumber = answer;
         computeStorage = [];
 
+        // make this a function
         operationHistoryCount ++;
         const pastOperationElement = document.createElement('button');
-        pastOperationElement.textContent += `${operationHistoryCount}. ${operationScreen.textContent} = ${answer}`;
+        pastOperationElement.addEventListener('click', () => {
+            for (let elements of pastOperationElement.textContent) {
+                 
+            };
+        });
+        
+        pastOperationElement.textContent += `${operationHistoryCount}.${operationScreen.textContent}=${answer}`;
         operationHistory.appendChild(pastOperationElement);
+        operationHistory.scrollIntoView(false);
         
         if (answerScreen.textContent = '') {
             
