@@ -78,7 +78,6 @@ function main () {
                 
                 updateDisplay(operationScreen, operand.value);
                 computeStorage.push(operand.value);
-                console.log(computeStorage);
 
             } else if (answer === null) {    // Based on the value of the var answer the displays are updated correctly.
                 
@@ -102,7 +101,7 @@ function main () {
 
         disableBtn(deleteBtn, equalsBtn);
         
-        if (currentNumber === '') {
+        if (currentNumber === '' && computeStorage[computeStorage.length - 1] != ')') {
             
             computeStorage.pop();
             
@@ -117,14 +116,8 @@ function main () {
 
         // make this a function
         operationHistoryCount ++;
-        const pastOperationElement = document.createElement('button');
-        pastOperationElement.addEventListener('click', () => {
-            for (let elements of pastOperationElement.textContent) {
-                 
-            };
-        });
-        
-        pastOperationElement.textContent += `${operationHistoryCount}.${operationScreen.textContent}=${answer}`;
+        const pastOperationElement = document.createElement('p');
+        pastOperationElement.textContent += `${operationHistoryCount}. ${operationScreen.textContent} = ${answer}`;
         operationHistory.appendChild(pastOperationElement);
         operationHistory.scrollIntoView(false);
         
@@ -136,9 +129,12 @@ function main () {
             
             clearDisplay(answerScreen);
             updateDisplay(answerScreen, currentNumber);
-
         };
     });
 };
+
+let test = [56, '+', '(', 32, '*', 9, ')', '+', '(', 23, '-', 5, ')'];
+console.log(compute(test));
+
 
 main();
