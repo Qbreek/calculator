@@ -31,11 +31,11 @@ function main () {
         
         if (currentUserInput != '') {
             
-            currentUserInput = currentUserInput.slice(0, currentUserInput.length-1);    // Slice the current number variable.
+            currentUserInput = currentUserInput.slice(0, currentUserInput.length-1);    // Slice the current input.
         
         } else {    // Current number is currently empty. Check what was last added to the buffer.
             
-            if (typeof (computeStorage[computeStorage.length - 1]) === 'number') {    // If its a number, this becomes the current number.
+            if (typeof (computeStorage[computeStorage.length - 1]) === 'number') {    // If its a number, this becomes the current input.
 
                 currentUserInput = String(computeStorage[computeStorage.length-1]);
                 currentUserInput = currentUserInput.slice(0, currentUserInput.length-1);    
