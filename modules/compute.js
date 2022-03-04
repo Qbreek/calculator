@@ -14,138 +14,138 @@
 function compute (computeStorage) {
 
     let i = 0, result;
-    
+
     while (computeStorage.length != 1) {
-        
-        const [indexOfOpeningPar, indexOfClosingPar, indexOfMult, indexOfDiv] = findIndex(computeStorage);
         
         if (computeStorage[0] === '-') {    // Edge case, first number is negative.
             
-            computeStorage.splice(0,2,-computeStorage[1]);
+            computeStorage.splice(0, 2, -computeStorage[1]);
             
-        }else if (typeof computeStorage[0] != 'number') {    // Wrong input : eg*9+1-121
+        } else if (computeStorage[0] === '+') {
 
+            computeStorage.splice(0, 2, computeStorage[1]);
+
+        }else if (typeof computeStorage[0] != 'number') {    // Wrong input : eg *9+1-121
+            
             return 'Error';
         };
         
-        if (indexOfOpeningPar === -1 && indexOfClosingPar === -1) {    // No parenthesis found.
+        const [indexOfMult, indexOfDiv] = findIndex(computeStorage);
+
+        if (indexOfMult === -1 && indexOfDiv === -1) {    // No division or multiplication. Add from left to right.
             
-            if (indexOfMult === -1 && indexOfDiv === -1) {    // No division or multiplication. Add from left to right.
+            switch (computeStorage[i+1]) {    
                 
-                switch (computeStorage[i+1]) {    
+                case '+' :    // [x, '+, y]
                     
-                    case '+' :    // [x, '+, y]
-                        
-                    result = add(computeStorage[i], computeStorage[i+2]);
+                result = add(computeStorage[i], computeStorage[i+2]);
+                break;
+                
+                case '-' :
+                    
+                    result = add(computeStorage[i], -computeStorage[i+2]);
                     break;
-                    
-                    case '-' :
-                        
-                        result = add(computeStorage[i], -computeStorage[i+2]);
-                        break;
-                    };
-                    
-                computeStorage.splice(i, 3, result);
-                        
-            } else if (indexOfMult === -1 && indexOfDiv != -1) {    // Only divisions found in computeStorage.
+                };
                 
-                i = indexOfDiv;
-                
-                switch (computeStorage[i+1]) {    // [x, '/, y]
+            computeStorage.splice(i, 3, result);
+                    
+        } else if (indexOfMult === -1 && indexOfDiv != -1) {    // Only divisions found in computeStorage.
             
-                    case '-' :    // Convert to negative
-                    
-                        result = divide(computeStorage[i-1], -computeStorage[i+2]);
-                        computeStorage.splice(i-1 , 4, result);
-                        break;
-                    
-                    default :
-                    
-                        result = divide(computeStorage[i-1], computeStorage[i+1])
-                        computeStorage.splice(i-1 , 3, result);
-                        break;
-                };
+            i = indexOfDiv;
+            console.log(indexOfDiv)
+            
+            switch (computeStorage[i+1]) {    // [x, '/, y]
+        
+                case '-' :    // Convert to negative
                 
-            } else if (indexOfDiv === -1  && indexOfMult != -1) {    // Only multiplications found in computeStorage.
-                
-                i = indexOfMult;
-                
-                switch (computeStorage[i+1]) {    // [x, '*, y]
-                    
-                    case '-' :    // Convert to negative
-                    
-                    result = multiply(computeStorage[i-1], -computeStorage[i+2]);
-                    computeStorage.splice(i-1 , 4, result);
-                    break;
-                    
-                    default :
-                    
-                    result = multiply(computeStorage[i-1], computeStorage[i+1]);
-                    computeStorage.splice(i-1 , 3, result);
-                    break;
-                };
-                
-            } else if (indexOfMult < indexOfDiv) {    // Both mult and div found. From left to right mult is first.
-                
-                i = indexOfMult;
-                
-                switch (computeStorage[i+1]) {
-                    
-                    case '-' :    // Convert to negative
-                    
-                    result = multiply(computeStorage[i-1], -computeStorage[i+2]);
-                    computeStorage.splice(i-1 , 4, result);
-                    break;
-                    
-                    default :
-                    
-                    result = multiply(computeStorage[i-1], computeStorage[i+1]);
-                    computeStorage.splice(i-1 , 3, result);
-                    break;
-                };
-                
-            } else {    // From left to right Div first.
-                
-                i = indexOfDiv;
-                
-                switch (computeStorage[i+1]) {
-                    
-                    case '-' :    // Convert to negative
-                    
                     result = divide(computeStorage[i-1], -computeStorage[i+2]);
                     computeStorage.splice(i-1 , 4, result);
                     break;
-                    
-                    default :
-                    
+                
+                default :
+                
                     result = divide(computeStorage[i-1], computeStorage[i+1])
                     computeStorage.splice(i-1 , 3, result);
                     break;
-                };
             };
             
-        } else {
+        } else if (indexOfDiv === -1  && indexOfMult != -1) {    // Only multiplications found in computeStorage.
             
-            // TODO tommorow.
-            let expressionInsidePar = computeStorage.slice(indexOfOpeningPar + 1, indexOfClosingPar);
-            console.log(expressionInsidePar);
-            let resultOfPar = compute(expressionInsidePar);
-            computeStorage.splice(indexOfOpeningPar, indexOfClosingPar - 1, resultOfPar);
-        };
+            i = indexOfMult;
+            
+            switch (computeStorage[i+1]) {    // [x, '*', y]
+                
+                case '-' :    // Convert to negative
+                
+                result = multiply(computeStorage[i-1], -computeStorage[i+2]);
+                computeStorage.splice(i-1 , 4, result);
+                break;
+                
+                default :
+                
+                result = multiply(computeStorage[i-1], computeStorage[i+1]);
+                computeStorage.splice(i-1 , 3, result);
+                break;
+            };
+            
+        } else if (indexOfMult < indexOfDiv) {    // Both mult and div found. From left to right mult is first.
+            
+            i = indexOfMult;
+            
+            switch (computeStorage[i+1]) {
+                
+                case '-' :    // Convert to negative
+                
+                result = multiply(computeStorage[i-1], -computeStorage[i+2]);
+                computeStorage.splice(i-1 , 4, result);
+                break;
+                
+                default :
+                
+                result = multiply(computeStorage[i-1], computeStorage[i+1]);
+                computeStorage.splice(i-1 , 3, result);
+                break;
+            };
+            
+        } else {    // From left to right Div first.
+            
+            i = indexOfDiv;
+            
+            switch (computeStorage[i+1]) {
+                
+                case '-' :    // Convert to negative
+                
+                result = divide(computeStorage[i-1], -computeStorage[i+2]);
+                computeStorage.splice(i-1 , 4, result);
+                break;
+                
+                default :
+                
+                result = divide(computeStorage[i-1], computeStorage[i+1])
+                computeStorage.splice(i-1 , 3, result);
+                break;
+            };
+        };  
         
-        console.log(computeStorage);
         i = 0;
     };
     
     if (isNaN(result)) {
 
         return 'Error';
-    };
+    
+    } else if (isFloat(result)) {
+
+        return Number(result).toFixed(5);
+    }
     
     return result; 
 };
 
+
 // Basic operations.
+const isFloat = (n) => n % 1 != 0;
+
 const add = (a, b) => a + b ;
 
 const multiply = (a, b) => a *b ;
@@ -163,12 +163,10 @@ const divide = (a, b) => {
 // Finds the given indexes in the array.
 function findIndex (array) {
 
-    const openPar = array.indexOf('(');
-    const closePar = array.indexOf(')');
     const mult = array.indexOf('*');
     const div = array.indexOf('/');
 
-    return [openPar, closePar, mult, div];
+    return [mult, div];
 };
 
 export default compute;
