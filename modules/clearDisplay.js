@@ -1,7 +1,3 @@
-function clearDisplay(display) {
-    
-    return display.textContent = '';
-
-};
+const clearDisplay = (display) => display.textContent = '';
 
 export default clearDisplay;
