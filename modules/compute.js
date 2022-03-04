@@ -11,8 +11,6 @@
     18 and 31, index - 1 and index + 1 respectively, remove 18, '*',-
     and 31' from the array and replace them with the result.
 */
-
-
 function compute (computeStorage) {
 
     let i = 0, result;
@@ -32,11 +30,11 @@ function compute (computeStorage) {
         
         if (indexOfOpeningPar === -1 && indexOfClosingPar === -1) {    // No parenthesis found.
             
-            if (indexOfMult === -1 && indexOfDiv === -1) {    // No division or multiplication found in computeStorage. Add from left to right.
+            if (indexOfMult === -1 && indexOfDiv === -1) {    // No division or multiplication. Add from left to right.
                 
-                switch (computeStorage[i+1]) {
+                switch (computeStorage[i+1]) {    
                     
-                    case '+' :
+                    case '+' :    // [x, '+, y]
                         
                     result = add(computeStorage[i], computeStorage[i+2]);
                     break;
@@ -53,7 +51,7 @@ function compute (computeStorage) {
                 
                 i = indexOfDiv;
                 
-                switch (computeStorage[i+1]) {
+                switch (computeStorage[i+1]) {    // [x, '/, y]
             
                     case '-' :    // Convert to negative
                     
@@ -72,7 +70,7 @@ function compute (computeStorage) {
                 
                 i = indexOfMult;
                 
-                switch (computeStorage[i+1]) {
+                switch (computeStorage[i+1]) {    // [x, '*, y]
                     
                     case '-' :    // Convert to negative
                     
@@ -87,7 +85,7 @@ function compute (computeStorage) {
                     break;
                 };
                 
-            } else if (indexOfMult < indexOfDiv) {    // Both multiplications and divisions found in computeStorage. From left to right mult is first.
+            } else if (indexOfMult < indexOfDiv) {    // Both mult and div found. From left to right mult is first.
                 
                 i = indexOfMult;
                 
@@ -106,7 +104,7 @@ function compute (computeStorage) {
                     break;
                 };
                 
-            } else {    // Div comes first, operate div first.
+            } else {    // From left to right Div first.
                 
                 i = indexOfDiv;
                 
@@ -171,6 +169,6 @@ function findIndex (array) {
     const div = array.indexOf('/');
 
     return [openPar, closePar, mult, div];
-}
+};
 
 export default compute;
