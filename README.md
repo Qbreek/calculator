@@ -1,5 +1,7 @@
 # Simple Calculator
 
+## LIVE : https://qbreek.github.io/calculator/
+
 ## Description
 
 This is a simple non scientific calculator, created using vanilla Javascript, CSS and HTML.
