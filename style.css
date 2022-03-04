@@ -72,9 +72,13 @@ button {
   flex-direction: column;
   align-items: flex-start;
   border: 10px solid #d3d3d3;
-  overflow: scroll;
-  width: 320px;
-  height: 200px;
   border-radius: 2%;
+  width: 320px;
+  min-height: 30px;
+  height: auto;
   background-color: white;
+}
+
+.operation-history > p {
+  padding: 3px;
 }

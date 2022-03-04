@@ -113,13 +113,10 @@ function main () {
         currentUserInput = answer;
         computeStorage = [];
 
-        // make this a function
         operationHistoryCount ++;
         const pastOperationElement = document.createElement('p');
         pastOperationElement.textContent += `${operationHistoryCount}. ${operationScreen.textContent} = ${answer}`;
         operationHistory.appendChild(pastOperationElement);
-        pastOperationElement.focus();
-        operationHistory.scrollIntoView(false);
         
         if (answerScreen.textContent = '') {
             

@@ -136,7 +136,7 @@ function compute (computeStorage) {
     
     } else if (isFloat(result)) {
 
-        return Number(result).toFixed(5);
+        return Number(result).toFixed(3);
     }
     
     return result; 
