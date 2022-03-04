@@ -100,7 +100,7 @@ function main () {
 
         disableBtn(deleteBtn, equalsBtn);
         
-        if (currentUserInput === '' && computeStorage[computeStorage.length - 1] != ')') {
+        if (currentUserInput === '') {
             
             computeStorage.pop();
             
@@ -118,6 +118,7 @@ function main () {
         const pastOperationElement = document.createElement('p');
         pastOperationElement.textContent += `${operationHistoryCount}. ${operationScreen.textContent} = ${answer}`;
         operationHistory.appendChild(pastOperationElement);
+        pastOperationElement.focus();
         operationHistory.scrollIntoView(false);
         
         if (answerScreen.textContent = '') {
@@ -131,8 +132,5 @@ function main () {
         };
     });
 };
-
-let test = [56, '+', '(', 32, '*', 9, ')', '+', '(', 23, '-', 5, ')'];
-console.log(compute(test));
 
 main();
