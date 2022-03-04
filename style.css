@@ -26,15 +26,18 @@ body {
 }
 
 .display {
+  width: 300px;
+  min-height: 90px;
+  height: auto;
   display: flex;
   flex-direction: column;
+  overflow-wrap: break-word;
   justify-content: space-between;
-  font-size: 30px;
   margin: 10px;
   padding: 10px;
-  height: 90px;
   background-color: #90ee90;
   border-radius: 2%;
+  font-size: 20px;
 }
 
 .answer {
@@ -54,6 +57,10 @@ button {
   border-radius: 5%;
   margin: 2px;
   font-size: 20px;
+}
+
+.span-three {
+  grid-column: span 3;
 }
 
 .special {
